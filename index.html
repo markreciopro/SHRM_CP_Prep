@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>MARSHRM_CP</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Marec HR360 · Gamified SHRM-CP Learning Console</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="hero-bg"></div>
+
+  <!-- GAMIFICATION OVERLAY CLUSTER (TOP-RIGHT) -->
+  <div class="overlay-cluster">
+    <div class="progress-ring-wrapper">
+      <svg class="progress-ring" width="70" height="70">
+        <circle class="progress-ring-bg" cx="35" cy="35" r="28"></circle>
+        <circle class="progress-ring-value" cx="35" cy="35" r="28"></circle>
+      </svg>
+      <div class="progress-ring-label">
+        <div id="overlayLevel">Lv 1</div>
+        <span id="overlayXPLabel">0 / 100 XP</span>
+      </div>
+    </div>
+
+    <div class="overlay-pill" id="overlayStreak">
+      <span class="overlay-pill-label">Streak</span>
+      <span class="overlay-pill-value" id="overlayStreakValue">0</span>
+    </div>
+
+    <div class="overlay-toast" id="overlayToast"></div>
+
+    <div class="overlay-xp-burst" id="overlayXPBurst">+0 XP</div>
+  </div>
+
+  <!-- CONFETTI CANVAS -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo-wrap">
+        <div class="logo-mark">
+          <img
+            src="https://github.com/markreciopro/marec_hr360_frontend/blob/main/Marec%20HR360.png?raw=1"
+            alt="Marec HR360 Logo"
+            class="hr360-logo"
+          />
+          <div>
+            <div class="logo-text-main">Marec HR360</div>
+            <div class="logo-tagline">Gamified SHRM-CP Learning</div>
+          </div>
+        </div>
+
+        <div class="profile-block">
+          <div class="profile-title">Profile</div>
+          <div class="profile-line">
+            <span>Status</span><strong id="profileStatus">Guest</strong>
+          </div>
+          <div class="profile-line">
+            <span>Mode</span><strong id="profileMode">Demo · Persistent</strong>
+          </div>
+          <div class="profile-line">
+            <span>Exam</span><strong>SHRM-CP</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <button class="nav-btn active" data-section="overview">Overview</button>
+        <button class="nav-btn" data-section="dashboard">Dashboard</button>
+        <button class="nav-btn" data-section="exam">Exam Mode</button>
+        <button class="nav-btn" data-section="review">Review & Analytics</button>
+        <button class="nav-btn" data-section="account">Account</button>
+      </div>
+
+      <div class="sidebar-note">
+        <div class="sidebar-note-title">Brand & IP Respect</div>
+        Marec HR360 supports SHRM-CP exam preparation as an independent platform.
+        It is not affiliated with, endorsed by, or sponsored by SHRM.
+        All questions and materials are original and do not reproduce SHRM exam content.
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <section id="overview" class="section active">
+        <div class="hero-section">
+          <div class="hero-pill">Gamified HR Learning Intelligence</div>
+          <h1 class="hero-title">Marec HR360 Command Center</h1>
+          <p class="hero-subtitle">
+            A persistent, gamified SHRM-CP learning console blending HR expertise, analytics, and product engineering—
+            designed to reward consistency, mastery, and momentum over time.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn hero-btn" data-section-jump="exam">Launch Exam Mode</button>
+            <button class="btn-secondary hero-btn" data-section-jump="dashboard">View Analytics</button>
+            <button class="btn-secondary hero-btn" data-section-jump="account">Create Account</button>
+          </div>
+
+          <div class="hero-motivation">
+            <div class="hero-metric">
+              <span class="hero-metric-label">Lifetime XP</span>
+              <span class="hero-metric-value" id="heroLifetimeXP">0</span>
+            </div>
+            <div class="hero-metric">
+              <span class="hero-metric-label">Current Level</span>
+              <span class="hero-metric-value" id="heroLevel">1</span>
+            </div>
+            <div class="hero-metric">
+              <span class="hero-metric-label">Best Streak</span>
+              <span class="hero-metric-value" id="heroBestStreak">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid overview-grid">
+          <div class="card">
+            <div class="section-title">How gamification works</div>
+            <ul class="bullet-list">
+              <li>Earn XP for every question—more for harder items and faster answers.</li>
+              <li>Level up using an exponential progression curve designed for long-term mastery.</li>
+              <li>Maintain streaks to unlock bonus XP and subtle achievement toasts.</li>
+            </ul>
+            <p class="hint small">
+              All progression is stored locally in your browser for this demo. No external accounts or servers are used.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Learning psychology baked in</div>
+            <ul class="bullet-list">
+              <li>Frequent, precise feedback on accuracy, pacing, and domain mastery.</li>
+              <li>High-energy but professional overlays that reward focus and consistency.</li>
+              <li>Motivational micro-copy tuned for HR professionals building exam confidence.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Official SHRM resources</div>
+          <p class="hint small">
+            These links go directly to SHRM’s official website. Marec HR360 is independent and does not reproduce SHRM content.
+          </p>
+
+          <ul class="resource-list">
+           
+            <li>
+              <span>Prepare for SHRM Certification/span</span>
+              <a href="https://www.shrm.org/enterprise-solutions/team-certification?utm_source=google&utm_medium=paid&utm_campaign=certification&utm_audience=allseg&utm_initiative=certification&utm_agency=yesand&utm_content=brand&utm_term=team_general_b2b&gad_source=1&gad_campaignid=23752974669&gbraid=0AAAABBQAdR7uTuK3DyRZr0oq4QkPe76o5&gclid=CjwKCAjw46HPBhAMEiwASZpLROaBMwr5Td8bS4D2Xhttd25ntgzGZcC-xbP3i75aayN1hvbdqVd9rBoC_xkQAvD_BwE" target="_blank">View SHRM BASK (PDF)</a>
+            </li>
+            <li>
+              <span>SHRM Learning & Courses</span>
+              <a href="https://www.shrm.org/learning" target="_blank">Explore SHRM learning</a>
+            </li>
+            <li>
+              <span>SHRM Membership</span>
+              <a href="https://www.shrm.org/membership" target="_blank">Learn about SHRM membership</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section">
+        <div class="page-header">
+          <h1>Analytics & Gamification Dashboard</h1>
+          <p class="subtitle">
+            Track lifetime XP, levels, streaks, and SHRM-CP learning performance in one command center.
+          </p>
+        </div>
+
+        <div class="grid kpi-grid">
+          <div class="card kpi-card">
+            <div class="kpi-label">Lifetime XP</div>
+            <div class="kpi-value" id="kpiLifetimeXP">0</div>
+            <div class="kpi-sub">Total XP earned across all sessions</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="kpi-label">Current level</div>
+            <div class="kpi-value" id="kpiLevel">1</div>
+            <div class="kpi-sub">Exponential progression curve</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="kpi-label">Best streak</div>
+            <div class="kpi-value" id="kpiBestStreak">0</div>
+            <div class="kpi-sub">Highest continuous correct streak</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="kpi-label">Sessions completed</div>
+            <div class="kpi-value" id="kpiSessions">0</div>
+            <div class="kpi-sub">Total exam-style practice sessions</div>
+          </div>
+        </div>
+
+        <div class="grid dashboard-row">
+          <div class="card chart-card">
+            <div class="section-title">Accuracy trend</div>
+            <canvas id="accuracyTrendChart"></canvas>
+          </div>
+
+          <div class="card chart-card">
+            <div class="section-title">Pass probability curve</div>
+            <canvas id="bellCurveChart"></canvas>
+          </div>
+        </div>
+
+        <div class="grid dashboard-row">
+          <div class="card chart-card">
+            <div class="section-title">Competency radar</div>
+            <canvas id="radarChart"></canvas>
+          </div>
+
+          <div class="card chart-card">
+            <div class="section-title">Time per question</div>
+            <canvas id="timeHistogramChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card heatmap-card">
+          <div class="section-title">Domain mastery heatmap</div>
+          <div class="heatmap-wrapper">
+            <canvas id="domainHeatmapCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="grid dashboard-row">
+          <div class="card">
+            <div class="section-title">Insights & recommendations</div>
+            <ul class="bullet-list" id="insightsList">
+              <li class="hint small">Complete at least one session to unlock personalized insights.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Motivational cues</div>
+            <ul class="bullet-list" id="motivationList">
+              <li>Short, focused sessions compound over time—consistency beats cramming.</li>
+              <li>Use streaks as a signal: protect them by doing at least one mini-session daily.</li>
+              <li>Target 75–80%+ accuracy with stable pacing before exam day.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXAM MODE -->
+      <section id="exam" class="section">
+        <div class="page-header">
+          <h1>Exam Mode</h1>
+          <p class="subtitle">
+            Run SHRM-CP-style practice sessions with dynamic XP rewards and precision feedback.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Session configuration</div>
+
+          <div class="config-row">
+            <div class="config-block">
+              <label class="config-label">Domain</label>
+              <select id="configDomain" class="config-input">
+                <option value="All">All Domains</option>
+                <option value="People">People</option>
+                <option value="Organization">Organization</option>
+                <option value="Workplace">Workplace</option>
+              </select>
+            </div>
+
+            <div class="config-block">
+              <label class="config-label">Difficulty</label>
+              <select id="configDifficulty" class="config-input">
+                <option value="Mixed">Mixed</option>
+                <option value="Foundation">Foundation</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
+
+            <div class="config-block">
+              <label class="config-label">Questions</label>
+              <input id="configLength" class="config-input" type="number" min="5" max="160" value="10" />
+            </div>
+          </div>
+
+          <div class="timer-block">
+            <div class="timer-label">Session timer</div>
+            <div class="timer-value" id="timerDisplay">00:00</div>
+          </div>
+
+          <button class="btn" id="startExamBtn">Start Exam Session</button>
+          <p class="hint small" id="examMotivation">
+            Tip: Focus on accuracy first, then gradually push your pace. XP rewards both.
+          </p>
+        </div>
+
+        <div class="card" id="quizCard" style="display:none;">
+          <div class="quiz-header">
+            <span class="pill pill-domain" id="pillDomain"></span>
+            <span class="pill pill-difficulty" id="pillDifficulty"></span>
+            <span class="pill pill-type" id="pillType"></span>
+          </div>
+
+          <div class="quiz-question" id="quizQuestionText"></div>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-rationale" id="quizRationale" style="display:none;"></div>
+
+          <div class="quiz-controls">
+            <button class="btn-secondary" id="skipBtn">Skip</button>
+            <button class="btn" id="submitBtn">Submit</button>
+          </div>
+
+          <div class="quiz-progress">
+            <div class="quiz-progress-bar"><div id="progressFill"></div></div>
+            <div class="quiz-progress-label">
+              <span id="progressLabel"></span>
+              <span id="scoreLabel"></span>
+            </div>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric-block">
+              <div class="metric-label">Answered</div>
+              <div class="metric-value" id="metricAnswered">0</div>
+            </div>
+
+            <div class="metric-block">
+              <div class="metric-label">Correct</div>
+              <div class="metric-value" id="metricCorrect">0</div>
+            </div>
+
+            <div class="metric-block">
+              <div class="metric-label">Accuracy</div>
+              <div class="metric-value" id="metricAccuracy">0%</div>
+            </div>
+
+            <div class="metric-block">
+              <div class="metric-label">Session XP</div>
+              <div class="metric-value" id="metricSessionXP">0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REVIEW -->
+      <section id="review" class="section">
+        <div class="page-header">
+          <h1>Review & Analytics</h1>
+          <p class="subtitle">Domain mastery, pacing, and personalized study focus.</p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="section-title">Domain mastery table</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Domain</th>
+                  <th>Accuracy</th>
+                  <th>Questions</th>
+                  <th>Avg Time</th>
+                </tr>
+              </thead>
+              <tbody id="domainHeatmapBody">
+                <tr>
+                  <td colspan="4" class="hint small">Complete sessions to populate domain mastery.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Pass probability & pacing</div>
+            <div class="metric-row">
+              <div class="metric-block">
+                <div class="metric-label">Estimated pass probability</div>
+                <div class="metric-value" id="metricPassProb">0%</div>
+              </div>
+
+              <div class="metric-block">
+                <div class="metric-label">Avg time / question</div>
+                <div class="metric-value" id="metricAvgTime">0s</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Personalized study path</div>
+          <ul class="bullet-list" id="studyPathList">
+            <li class="hint small">Your study path will update as you complete sessions.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Rationale log</div>
+          <div class="rationale-list" id="rationaleList">
+            <p class="hint small">Rationales from answered questions will appear here.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACCOUNT -->
+      <section id="account" class="section">
+        <div class="page-header">
+          <h1>Account</h1>
+          <p class="subtitle">Frontend-only account flows with persistent local progression.</p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="section-title">Create account</div>
+            <div class="form-group">
+              <label class="config-label">Email</label>
+              <input id="signupEmail" class="config-input" type="email" placeholder="you@example.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="config-label">Password</label>
+              <input id="signupPassword" class="config-input" type="password" placeholder="••••••••" />
+            </div>
+
+            <button class="btn" id="signupBtn">Create Account</button>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Login</div>
+            <div class="form-group">
+              <label class="config-label">Email</label>
+              <input id="loginEmail" class="config-input" type="email" placeholder="you@example.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="config-label">Password</label>
+              <input id="loginPassword" class="config-input" type="password" placeholder="••••••••" />
+            </div>
+
+            <button class="btn" id="loginBtn">Login</button>
+            <button class="btn-secondary" id="logoutBtn" style="margin-top:8px;">Logout</button>
+
+            <p class="hint small" style="margin-top:8px;">
+              This is a frontend-only demo. Credentials and progression are stored locally in your browser.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-main">Marec HR360 · Gamified SHRM-CP Learning Console (Demo)</div>
+        <div class="footer-disclaimer">
+          Marec HR360 is an independent learning and analytics concept for SHRM-CP-style preparation.
+          It is not affiliated with, endorsed by, or sponsored by SHRM. For official certification information,
+          always refer to <a href="https://www.shrm.org" target="_blank">SHRM.org</a>.
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
