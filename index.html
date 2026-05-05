@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>MARSHRM_CP</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MAREC HR360 · SHRM‑CP Prep + Lightning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/png"
+        href="https://raw.githubusercontent.com/markreciopro/marec_hr360_frontend/main/Marec%20HR360.png" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Gamification Overlay -->
+  <div id="overlayGamification" class="overlay-gamification">
+    <div class="overlay-card glass">
+      <div class="overlay-header">
+        <div class="overlay-level" id="overlayLevel">Lv 1</div>
+        <div class="overlay-xp" id="overlayXPLabel">0/100 XP</div>
+      </div>
+      <div class="overlay-ring">
+        <svg width="80" height="80">
+          <defs>
+            <linearGradient id="gradXP" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#E53935" />
+              <stop offset="100%" stop-color="#F97316" />
+            </linearGradient>
+          </defs>
+          <circle class="progress-ring-bg" cx="40" cy="40" r="28"></circle>
+          <circle class="progress-ring-value" cx="40" cy="40" r="28"></circle>
+        </svg>
+      </div>
+      <div class="overlay-stats">
+        <div class="overlay-stat">
+          <span class="label">Current Streak</span>
+          <span class="value" id="overlayStreakValue">0</span>
+        </div>
+        <div class="overlay-stat">
+          <span class="label">Best Streak</span>
+          <span class="value" id="kpiBestStreak">0</span>
+        </div>
+        <div class="overlay-stat">
+          <span class="label">Lifetime XP</span>
+          <span class="value" id="heroLifetimeXP">0</span>
+        </div>
+      </div>
+      <div id="overlayXPBurst" class="overlay-xp-burst"></div>
+      <div id="overlayToast" class="overlay-toast"></div>
+    </div>
+  </div>
+
+  <!-- Top Navigation -->
+  <header class="top-nav glass">
+    <div class="brand">
+      <img
+        src="https://raw.githubusercontent.com/markreciopro/marec_hr360_frontend/main/Marec%20HR360.png"
+        alt="MAREC HR360 Logo"
+        class="brand-logo"
+      />
+      <div class="brand-text">
+        <div class="brand-title">MAREC HR360</div>
+        <div class="brand-subtitle">SHRM‑CP Prep · Lightning Glossary</div>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <button class="nav-link active" data-section="sectionDashboard">Dashboard</button>
+      <button class="nav-link" data-section="sectionExam">Exam Session</button>
+      <button class="nav-link" data-section="sectionAnalytics">Analytics</button>
+      <button class="nav-link" data-section="sectionReview">Review</button>
+      <button class="nav-link" data-section="sectionProfile">Profile</button>
+    </nav>
+
+    <div class="nav-right">
+      <div class="api-indicator">
+        <div id="apiLoadingIndicator" class="api-loading">
+          <div class="spinner"></div>
+          <span id="apiLoadingText">Connecting…</span>
+        </div>
+        <div id="apiStatusMsg" class="api-status-msg"></div>
+      </div>
+      <div class="profile-pill">
+        <span id="profileStatus">Guest</span>
+        <span class="dot"></span>
+        <span id="profileMode">Demo · Persistent</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App -->
+  <main class="app-main">
+    <!-- DASHBOARD -->
+    <section id="sectionDashboard" class="app-section active">
+      <div class="section-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p class="section-subtitle">
+            Track your SHRM‑CP mastery, Lightning recall, and domain‑level performance.
+          </p>
+        </div>
+        <div class="section-actions">
+          <button class="primary-btn" data-section-jump="sectionExam">Start New Session</button>
+        </div>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Study Sessions</h2>
+          </div>
+          <div class="kpi-row">
+            <div class="kpi">
+              <span class="kpi-label">Sessions Completed</span>
+              <span class="kpi-value" id="kpiSessions">0</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Lifetime XP</span>
+              <span class="kpi-value" id="kpiLifetimeXP">0</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Level</span>
+              <span class="kpi-value" id="kpiLevel">1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Accuracy Trend</h2>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="accuracyTrendChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Score Distribution</h2>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="bellCurveChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Domain Accuracy Radar</h2>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Gamification Snapshot</h2>
+          </div>
+          <div class="kpi-row">
+            <div class="kpi">
+              <span class="kpi-label">Level</span>
+              <span class="kpi-value" id="heroLevel">1</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Lifetime XP</span>
+              <span class="kpi-value" id="heroLifetimeXP">0</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">Best Streak</span>
+              <span class="kpi-value" id="heroBestStreak">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXAM SESSION -->
+    <section id="sectionExam" class="app-section">
+      <div class="section-header">
+        <div>
+          <h1>Exam Session</h1>
+          <p class="section-subtitle">
+            Mix SHRM‑CP scenarios with Lightning glossary items, filtered by domain and difficulty.
+          </p>
+        </div>
+        <div class="section-actions">
+          <span class="timer-label">Session Time</span>
+          <span id="timerDisplay" class="timer-display">00:00</span>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <!-- Config -->
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Session Configuration</h2>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Question Source</label>
+            <div class="source-toggle">
+              <button class="source-btn active" data-source="both">Both</button>
+              <button class="source-btn" data-source="shrm_cp_prep">SHRM‑CP</button>
+              <button class="source-btn" data-source="lightning_questions">Lightning</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="configLength" class="field-label">Number of Questions</label>
+            <input id="configLength" type="number" min="5" max="200" value="20" class="field-input" />
+          </div>
+
+          <div class="field-group">
+            <label for="configDomain" class="field-label">Domain</label>
+            <select id="configDomain" class="field-input">
+              <option value="All">All Domains</option>
+              <option value="People">People</option>
+              <option value="Workplace">Workplace</option>
+              <option value="Organization">Organization</option>
+              <option value="Business">Business</option>
+              <option value="Leadership">Leadership</option>
+              <option value="Interpersonal">Interpersonal</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="configDifficulty" class="field-label">Difficulty</label>
+            <select id="configDifficulty" class="field-input">
+              <option value="Mixed">Mixed</option>
+              <option value="Foundation">Foundation</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+
+          <button id="startExamBtn" class="primary-btn full-width">Start Exam Session</button>
+        </div>
+
+        <!-- Live Quiz -->
+        <div class="card glass" id="quizCard" style="display:none;">
+          <div class="quiz-header">
+            <div class="pill-row">
+              <span id="pillSource" class="pill pill-red">Source</span>
+              <span id="pillDomain" class="pill">Domain</span>
+              <span id="pillDifficulty" class="pill">Difficulty</span>
+              <span id="pillType" class="pill pill-outline">Type</span>
+              <span id="pillCompetency" class="pill pill-outline" style="display:none;">Competency</span>
+            </div>
+            <div class="progress-row">
+              <span id="progressLabel" class="progress-label">Question 1 of 20</span>
+              <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-body">
+            <div id="quizQuestionText" class="quiz-question">
+              Configure your session and click “Start Exam Session” to begin.
+            </div>
+            <div id="quizOptions" class="quiz-options"></div>
+          </div>
+
+          <div id="quizRationale" class="quiz-rationale" style="display:none;"></div>
+
+          <div class="quiz-footer">
+            <div class="quiz-actions">
+              <button id="skipBtn" class="ghost-btn">Skip</button>
+              <button id="submitBtn" class="primary-btn">Submit</button>
+            </div>
+            <div class="quiz-metrics">
+              <div class="metric">
+                <span class="metric-label">Answered</span>
+                <span class="metric-value" id="metricAnswered">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Correct</span>
+                <span class="metric-value" id="metricCorrect">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Accuracy</span>
+                <span class="metric-value" id="metricAccuracy">0%</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Session XP</span>
+                <span class="metric-value" id="metricSessionXP">0</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Score</span>
+                <span class="metric-value" id="scoreLabel"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rationale Log -->
+      <div class="card glass mt-lg">
+        <div class="card-header">
+          <h2>Rationale Log</h2>
+          <p class="hint small">
+            Every question you answer adds a rationale entry here for spaced review.
+          </p>
+        </div>
+        <div id="rationaleList" class="rationale-list"></div>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="sectionAnalytics" class="app-section">
+      <div class="section-header">
+        <div>
+          <h1>Analytics</h1>
+          <p class="section-subtitle">
+            See how your performance evolves across sessions and domains.
+          </p>
+        </div>
+        <div class="section-actions">
+          <button class="ghost-btn" data-section-jump="sectionExam">Start New Session</button>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <div class="card-header">
+          <h2>Domain Breakdown</h2>
+          <p class="hint small">
+            Use this to decide which domains to emphasize in your next block.
+          </p>
+        </div>
+        <div id="reviewDomainList" class="review-list"></div>
+      </div>
+    </section>
+
+    <!-- REVIEW -->
+    <section id="sectionReview" class="app-section">
+      <div class="section-header">
+        <div>
+          <h1>Review & Study Plan</h1>
+          <p class="section-subtitle">
+            Domain‑level breakdown to guide your next SHRM‑CP study sprint.
+          </p>
+        </div>
+        <div class="section-actions">
+          <button class="ghost-btn" data-section-jump="sectionExam">Target Weak Domains</button>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <div class="card-header">
+          <h2>Domain Performance</h2>
+        </div>
+        <div id="reviewDomainListSecondary" class="review-list"></div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="sectionProfile" class="app-section">
+      <div class="section-header">
+        <div>
+          <h1>Profile & Persistence</h1>
+          <p class="section-subtitle">
+            Optional local account so your analytics and XP persist across sessions.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Create Account</h2>
+          </div>
+          <div class="field-group">
+            <label for="signupEmail" class="field-label">Email</label>
+            <input id="signupEmail" type="email" class="field-input" placeholder="you@example.com" />
+          </div>
+          <div class="field-group">
+            <label for="signupPassword" class="field-label">Password</label>
+            <input id="signupPassword" type="password" class="field-input" placeholder="••••••••" />
+          </div>
+          <button id="signupBtn" class="primary-btn full-width">Create Account</button>
+          <p class="hint small">
+            Accounts are stored locally in your browser for this prototype.
+          </p>
+        </div>
+
+        <div class="card glass">
+          <div class="card-header">
+            <h2>Sign In / Out</h2>
+          </div>
+          <div class="field-group">
+            <label for="loginEmail" class="field-label">Email</label>
+            <input id="loginEmail" type="email" class="field-input" placeholder="you@example.com" />
+          </div>
+          <div class="field-group">
+            <label for="loginPassword" class="field-label">Password</label>
+            <input id="loginPassword" type="password" class="field-input" placeholder="••••••••" />
+          </div>
+          <div class="profile-actions">
+            <button id="loginBtn" class="primary-btn">Sign In</button>
+            <button id="logoutBtn" class="ghost-btn">Sign Out</button>
+          </div>
+          <p class="hint small">
+            When signed in, your analytics and XP are tied to your local profile.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
